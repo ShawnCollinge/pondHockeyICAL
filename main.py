@@ -1,7 +1,6 @@
 import requests
 from icalendar import Calendar, Event
 from datetime import datetime, timedelta
-from pathlib import Path
 import os
 
 
@@ -21,7 +20,7 @@ try:
 except:
     lastDate = datetime.now()
     cal = Calendar()
-    cal.add('prodid', 'Seattle Dogs Schedule')
+    cal.add('prodid', f'{TEAM_NAME} Schedule')
     cal.add('version', '2.0')
 
 schedule = []
@@ -30,9 +29,9 @@ for game in fullSchedule:
     if game['teamAwayName'] == TEAM_NAME or game['teamHomeName'] == TEAM_NAME:
         date = datetime.strptime(game['dateTime'], "%Y-%m-%dT%H:%M:%S")
         if date > lastDate:
-            awayOrHome = "Away game" if game['teamAwayName'] == TEAM_NAME else "Home game"
             event = Event()
-            event.add('summary', f"Pond Hockey {awayOrHome}")
+            event.add('name', f"Pond Hockey")
+            event.add("description", f"{game['teamAwayName']} @ {game['teamHomeName']}")
             event.add('dtstart', date)
             event.add('dtend', date + timedelta(hours=1))
             cal.add_component(event)
