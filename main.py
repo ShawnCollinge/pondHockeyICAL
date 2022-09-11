@@ -30,7 +30,8 @@ for game in fullSchedule:
         date = datetime.strptime(game['dateTime'], "%Y-%m-%dT%H:%M:%S")
         if date > lastDate:
             event = Event()
-            event.add('summary', f"Pond Hockey - {game['teamAwayName']} @ {game['teamHomeName']}")
+            event.add('summary', f"Pond Hockey")
+            event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
             event.add('dtstart', date)
             event.add('dtend', date + timedelta(hours=1))
             cal.add_component(event)
