@@ -20,7 +20,7 @@ try:
 except:
     lastDate = datetime.now()
     cal = Calendar()
-    cal.add('prodid', f'-//Dash platform/cal//NONSGML v1.0//EN')
+    cal.add('prodid', f'-//Pond hockey/cal//CAL v1.0//EN')
     cal.add('version', '2.0')
     cal.add('method', "PUBLISH")
     cal.add('calscale', 'GEORGIAN')
