@@ -15,17 +15,18 @@ scriptPath = os.path.dirname(__file__)
 try:        
     g = open(f'{scriptPath}/pondhockey.ics','rb')
     cal = Calendar.from_ical(g.read())
-    lastDate = datetime.strptime(cal.walk()[-1].decoded('dtstart'), "%Y-%m-%dT%H:%M:%S")
+    lastDate = datetime.strptime(cal.walk()[-1].decoded('dtstart'), "%Y-%m-%dT%H%M%S")
     g.close()
 except:
     lastDate = datetime.now()
     cal = Calendar()
-    cal.add('prodid', f'-//Shawn platform/cal//{TEAM_NAME} Schedule//EN')
+    cal.add('prodid', f'-//Dash platform/cal//NONSGML v1.0//EN')
     cal.add('version', '2.0')
     cal.add('method', "PUBLISH")
     cal.add('calscale', 'GEORGIAN')
     cal.add('x-wr-timezone', 'America/Los_Angeles')
     cal.add('x-wr-calname', "Pond hockey calendar")
+    cal.add('x-wr-caldesk', 'Pond hockey calendar')
 
 
 for game in fullSchedule:
@@ -35,10 +36,14 @@ for game in fullSchedule:
             event = Event()            
             event.add('dtstart', vDatetime(date))
             event.add('dtend', vDatetime(date + timedelta(hours=1)))
-            event.add('class', 'public')
+            event.add('dtstamp', vDatetime(datetime.now()))
+            event.add('class', 'PUBLIC')
             event.add('summary', f"Pond Hockey")
             event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
             event.add('priority', 5)
+            event.add('uid', "97653.27105@snoking")
+            event.add('created', vDatetime(datetime.now()))
+            event.add('last-modified', vDatetime(datetime.now()))
             cal.add_component(event)
 
 
