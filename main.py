@@ -41,7 +41,7 @@ for game in fullSchedule:
             event.add('summary', f"Pond Hockey")
             event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
             event.add('priority', 5)
-            # event.add('uid', "97653.27105@snoking")
+            event.add('uid', f"{game['id']}.{SEASON_ID}@pondhockey")
             event.add('created', vDatetime(datetime.now()))
             event.add('last-modified', vDatetime(datetime.now()))
             cal.add_component(event)
