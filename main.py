@@ -5,9 +5,11 @@ import os
 
 
 SEASON_ID = "1084"
+TEAM_ID = "2502"
 TEAM_NAME = "Seattle Dogs"
 
-url = f"https://api.codetabs.com/v1/proxy/?quest=http://snokingpondhockey.com/api/game/list/{SEASON_ID}/0/0"
+#url = f"https://api.codetabs.com/v1/proxy/?quest=http://snokingpondhockey.com/api/game/list/{SEASON_ID}/0/0"
+url = f'https://api.codetabs.com/v1/proxy/?quest=https://snokinghockeyleague.com/api/game/list/{SEASON_ID}/0/{TEAM_ID}'
 response = requests.get(url)
 fullSchedule = response.json()
 scriptPath = os.path.dirname(__file__)
@@ -17,6 +19,7 @@ try:
     cal = Calendar.from_ical(g.read())
     lastDate = datetime.strptime(cal.walk()[-1].decoded('dtstart'), "%Y-%m-%dT%H%M%S")
     g.close()
+
 except:
     lastDate = datetime.now()
     cal = Calendar()
@@ -30,21 +33,20 @@ except:
 
 
 for game in fullSchedule:
-    if game['teamAwayName'] == TEAM_NAME or game['teamHomeName'] == TEAM_NAME:
-        date = datetime.strptime(game['dateTime'], "%Y-%m-%dT%H:%M:%S")
-        if date > lastDate:
-            event = Event()            
-            event.add('dtstart', vDatetime(date))
-            event.add('dtend', vDatetime(date + timedelta(hours=1)))
-            event.add('dtstamp', vDatetime(datetime.now()))
-            event.add('class', 'PUBLIC')
-            event.add('summary', f"Pond Hockey")
-            event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
-            event.add('priority', 5)
-            event.add('uid', f"{game['id']}.{SEASON_ID}@pondhockey")
-            event.add('created', vDatetime(datetime.now()))
-            event.add('last-modified', vDatetime(datetime.now()))
-            cal.add_component(event)
+    date = datetime.strptime(game['dateTime'], "%Y-%m-%dT%H:%M:%S")
+    if date > lastDate:
+        event = Event()            
+        event.add('dtstart', vDatetime(date))
+        event.add('dtend', vDatetime(date + timedelta(hours=1)))
+        event.add('dtstamp', vDatetime(datetime.now()))
+        event.add('class', 'PUBLIC')
+        event.add('summary', f"Pond Hockey")
+        event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
+        event.add('priority', 5)
+        event.add('uid', f"{game['id']}.{SEASON_ID}@pondhockey")
+        event.add('created', vDatetime(datetime.now()))
+        event.add('last-modified', vDatetime(datetime.now()))
+        cal.add_component(event)
 
 
 g = open(f'{scriptPath}/pondhockey.ics','wb')
