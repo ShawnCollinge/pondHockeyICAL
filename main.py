@@ -9,6 +9,7 @@ TEAM_ID = "2502"
 TEAM_NAME = "Seattle Dogs"
 
 #url = f"https://api.codetabs.com/v1/proxy/?quest=http://snokingpondhockey.com/api/game/list/{SEASON_ID}/0/0"
+
 url = f'https://api.codetabs.com/v1/proxy/?quest=https://snokinghockeyleague.com/api/game/list/{SEASON_ID}/0/{TEAM_ID}'
 response = requests.get(url)
 fullSchedule = response.json()
