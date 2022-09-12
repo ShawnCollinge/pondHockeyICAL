@@ -27,11 +27,13 @@ for game in fullSchedule:
     if game['teamAwayName'] == TEAM_NAME or game['teamHomeName'] == TEAM_NAME:
         date = datetime.strptime(game['dateTime'], "%Y-%m-%dT%H:%M:%S")
         if date > lastDate:
-            event = Event()
-            event.add('summary', f"Pond Hockey")
-            event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
+            event = Event()            
             event.add('dtstart', vDatetime(date))
             event.add('dtend', vDatetime(date + timedelta(hours=1)))
+            event.add('class', 'public')
+            event.add('summary', f"Pond Hockey")
+            event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
+            event.add('priority', 5)
             cal.add_component(event)
 
 
