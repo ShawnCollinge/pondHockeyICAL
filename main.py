@@ -20,8 +20,13 @@ try:
 except:
     lastDate = datetime.now()
     cal = Calendar()
-    cal.add('prodid', f'{TEAM_NAME} Schedule')
+    cal.add('prodid', f'-//Shawn platform/cal//{TEAM_NAME} Schedule//EN')
     cal.add('version', '2.0')
+    cal.add('method', "PUBLISH")
+    cal.add('calscale', 'GEORGIAN')
+    cal.add('x-wr-timezone', 'America/Los_Angeles')
+    cal.add('x-wr-calname', "Pond hockey calendar")
+
 
 for game in fullSchedule:
     if game['teamAwayName'] == TEAM_NAME or game['teamHomeName'] == TEAM_NAME:
