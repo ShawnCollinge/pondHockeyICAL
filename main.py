@@ -1,5 +1,5 @@
 import requests
-from icalendar import Calendar, Event
+from icalendar import Calendar, Event, vDatetime
 from datetime import datetime, timedelta
 import os
 
@@ -15,15 +15,13 @@ scriptPath = os.path.dirname(__file__)
 try:        
     g = open(f'{scriptPath}/pondhockey.ics','rb')
     cal = Calendar.from_ical(g.read())
-    lastDate = cal.walk()[-1].decoded('dtstart')
+    lastDate = datetime.strptime(cal.walk()[-1].decoded('dtstart'), "%Y-%m-%dT%H:%M:%S")
     g.close()
 except:
     lastDate = datetime.now()
     cal = Calendar()
     cal.add('prodid', f'{TEAM_NAME} Schedule')
     cal.add('version', '2.0')
-
-schedule = []
 
 for game in fullSchedule:
     if game['teamAwayName'] == TEAM_NAME or game['teamHomeName'] == TEAM_NAME:
@@ -32,8 +30,8 @@ for game in fullSchedule:
             event = Event()
             event.add('summary', f"Pond Hockey")
             event.add('description', f"{game['teamAwayName']} @ {game['teamHomeName']}")
-            event.add('dtstart', date)
-            event.add('dtend', date + timedelta(hours=1))
+            event.add('dtstart', vDatetime(date))
+            event.add('dtend', vDatetime(date + timedelta(hours=1)))
             cal.add_component(event)
 
 
